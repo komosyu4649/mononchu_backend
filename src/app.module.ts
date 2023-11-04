@@ -5,6 +5,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import { tables } from './app.tables';
+import { StuffModule } from './stuff/stuff.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { tables } from './app.tables';
       entities: tables,
       namingStrategy: new SnakeNamingStrategy(),
     }),
+    StuffModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,9 +1,8 @@
 FROM node:16.14.2
-RUN npm i -g @nestjs/cli
-USER node
-ADD --chown=node:node . /usr/src/app/
 WORKDIR /usr/src/app
-RUN yarn && \ 
-    yarn cache clean && \
-    yarn run build
-CMD ["yarn", "run", "start:prod"]
+COPY package.json yarn.lock ./
+RUN yarn --pure-lockfile
+COPY --chown=node:node . .
+RUN yarn build
+USER node
+CMD ["node", "dist/src/main"]

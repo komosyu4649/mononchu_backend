@@ -6,6 +6,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    command: yarn start:dev
     ports:
       - 4000:4000
     volumes:
