@@ -1,9 +1,7 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import {
-  StuffCategory as IF,
-  // StuffPropertyStatus,
-  // StuffWantStatus,
-} from './_types';
+import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { StuffCategory as IF } from './_types';
+import { StuffPropertyStatusEntity } from './stuff-property-status.entity';
+import { StuffWantStatusEntity } from './stuff-want-status.entity';
 
 @Entity('stuff_category')
 export class StuffCategoryEntity implements IF {
@@ -16,9 +14,9 @@ export class StuffCategoryEntity implements IF {
   @Column()
   name: string;
 
-  // @Column()
-  // property: StuffPropertyStatus;
+  @ManyToMany(() => StuffPropertyStatusEntity)
+  property: StuffPropertyStatusEntity;
 
-  // @Column()
-  // want: StuffWantStatus;
+  @ManyToMany(() => StuffWantStatusEntity)
+  want: StuffWantStatusEntity;
 }

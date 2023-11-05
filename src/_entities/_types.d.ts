@@ -1,8 +1,8 @@
 export interface StuffCategory {
   rank: number;
   name: string;
-  // property: StuffPropertyStatus;
-  // want: StuffWantStatus;
+  property: StuffPropertyStatus;
+  want: StuffWantStatus;
 }
 
 export interface StuffPropertyStatus {

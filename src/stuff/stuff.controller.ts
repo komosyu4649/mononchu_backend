@@ -1,11 +1,20 @@
-import { Controller, Get } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
+import { StuffService } from './stuff.service';
+import { CreateStuffCategoryDto } from './dto/create-stuff-category.dto';
 
 @Controller('stuff')
 export class StuffController {
-  constructor() {}
+  constructor(private readonly stuffService: StuffService) {}
 
-  @Get()
-  public async getStuff() {
-    return 'stuff';
+  @Post('category/create')
+  public async createStuffCategory(
+    @Body() createStuffCategoryDto: CreateStuffCategoryDto,
+  ) {
+    return await this.stuffService.createStuffCategory(createStuffCategoryDto);
+  }
+
+  @Get('category')
+  public async getStuffCategory() {
+    return await this.stuffService.getStuffCategory();
   }
 }
