@@ -14,7 +14,7 @@ import { StuffModule } from './stuff/stuff.module';
     }),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: process.env.DB_HOST,
+      host: process.env.DB_CONTAINER_NAME,
       port: Number(process.env.DB_PORT),
       username: process.env.DB_USER_NAME,
       password: process.env.DB_PASSWORD,

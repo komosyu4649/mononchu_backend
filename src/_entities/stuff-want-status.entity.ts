@@ -1,5 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { StuffWantStatus as IF } from './_types';
+import { StuffCategoryEntity } from './stuff-category.entity';
 
 @Entity('stuff_want_status')
 export class StuffWantStatusEntity implements IF {
@@ -11,4 +12,7 @@ export class StuffWantStatusEntity implements IF {
 
   @Column()
   totalAmount: number;
+
+  @OneToMany(() => StuffCategoryEntity, (category) => category.want)
+  category: StuffCategoryEntity[];
 }

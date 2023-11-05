@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { StuffCategory as IF } from './_types';
 import { StuffPropertyStatusEntity } from './stuff-property-status.entity';
 import { StuffWantStatusEntity } from './stuff-want-status.entity';
@@ -14,9 +14,9 @@ export class StuffCategoryEntity implements IF {
   @Column()
   name: string;
 
-  @ManyToMany(() => StuffPropertyStatusEntity)
+  @ManyToOne(() => StuffPropertyStatusEntity, (property) => property.category)
   property: StuffPropertyStatusEntity;
 
-  @ManyToMany(() => StuffWantStatusEntity)
+  @ManyToOne(() => StuffWantStatusEntity, (want) => want.category)
   want: StuffWantStatusEntity;
 }

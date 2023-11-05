@@ -15,7 +15,7 @@ services:
       - db
 
   db:
-    container_name: postgres-db
+    container_name: ${DB_CONTAINER_NAME}
     image: postgres:13
     ports:
       - ${DB_PORT}:5432

@@ -1,5 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { StuffPropertyStatus as IF } from './_types';
+import { StuffCategoryEntity } from './stuff-category.entity';
 
 @Entity('stuff_property_status')
 export class StuffPropertyStatusEntity implements IF {
@@ -11,4 +12,7 @@ export class StuffPropertyStatusEntity implements IF {
 
   @Column()
   limitedNumber: number;
+
+  @OneToMany(() => StuffCategoryEntity, (category) => category.property)
+  category: StuffCategoryEntity[];
 }
