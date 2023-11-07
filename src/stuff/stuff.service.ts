@@ -15,18 +15,14 @@ export class StuffService {
     const stuffCategory = this.stuffCategoryRepository.create({
       ...createStuffCategoryDto,
       rank: 1,
-      property: {
-        registrationNumber: 5,
-        limitedNumber: 12,
-      },
-      want: {
-        registrationNumber: 3,
-        totalAmount: 10000,
-      },
+      // propertyRegistrationNumber: 2,
+      // wantRegistrationNumber: 3,
+      // wantTotalAmount: 1000,
     });
     console.log('stuffCategory', stuffCategory);
-    // await this.stuffCategoryRepository.save(stuffCategory);
-    // return stuffCategory;
+    console.log('createStuffCategoryDto', createStuffCategoryDto);
+    await this.stuffCategoryRepository.save(stuffCategory);
+    return stuffCategory;
   }
 
   async calcCategoryRank() {

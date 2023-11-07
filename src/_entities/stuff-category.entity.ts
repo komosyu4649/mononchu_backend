@@ -1,7 +1,5 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { StuffCategory as IF } from './_types';
-import { StuffPropertyStatusEntity } from './stuff-property-status.entity';
-import { StuffWantStatusEntity } from './stuff-want-status.entity';
 
 @Entity('stuff_category')
 export class StuffCategoryEntity implements IF {
@@ -14,9 +12,15 @@ export class StuffCategoryEntity implements IF {
   @Column()
   name: string;
 
-  @ManyToOne(() => StuffPropertyStatusEntity, (property) => property.category)
-  property: StuffPropertyStatusEntity;
+  @Column()
+  propertyRegistrationNumber: number;
 
-  @ManyToOne(() => StuffWantStatusEntity, (want) => want.category)
-  want: StuffWantStatusEntity;
+  @Column()
+  propertyLimitedNumber: number;
+
+  @Column()
+  wantRegistrationNumber: number;
+
+  @Column()
+  wantTotalAmount: number;
 }

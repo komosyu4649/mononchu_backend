@@ -1,16 +1,8 @@
 export interface StuffCategory {
   rank: number;
   name: string;
-  property: StuffPropertyStatus;
-  want: StuffWantStatus;
-}
-
-export interface StuffPropertyStatus {
-  registrationNumber: number;
-  limitedNumber: number;
-}
-
-export interface StuffWantStatus {
-  registrationNumber: number;
-  totalAmount: number;
+  propertyRegistrationNumber: number;
+  propertyLimitedNumber: number;
+  wantRegistrationNumber: number;
+  wantTotalAmount: number;
 }
