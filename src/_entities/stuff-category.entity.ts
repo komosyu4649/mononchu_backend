@@ -3,7 +3,7 @@ import { StuffCategory as IF } from './_types';
 
 @Entity('stuff_category')
 export class StuffCategoryEntity implements IF {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn({})
   id: number;
 
   @Column()
@@ -13,14 +13,14 @@ export class StuffCategoryEntity implements IF {
   name: string;
 
   @Column()
-  propertyRegistrationNumber: number;
-
-  @Column()
   propertyLimitedNumber: number;
 
-  @Column()
+  @Column({ nullable: true })
+  propertyRegistrationNumber: number;
+
+  @Column({ nullable: true })
   wantRegistrationNumber: number;
 
-  @Column()
+  @Column({ nullable: true })
   wantTotalAmount: number;
 }

@@ -12,9 +12,10 @@ export class StuffService {
 
   async createStuffCategory(createStuffCategoryDto) {
     // stuff_categoryを作成する処理
+    // TODO: rankを計算する処理を追加する
     const stuffCategory = this.stuffCategoryRepository.create({
       ...createStuffCategoryDto,
-      rank: 1,
+      // rank: 1,
       // propertyRegistrationNumber: 2,
       // wantRegistrationNumber: 3,
       // wantTotalAmount: 1000,
