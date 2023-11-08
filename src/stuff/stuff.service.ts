@@ -10,24 +10,35 @@ export class StuffService {
     private readonly stuffCategoryRepository: Repository<StuffCategoryEntity>,
   ) {}
 
-  async createStuffCategory(createStuffCategoryDto) {
+  public async createStuffCategory(createStuffCategoryDto) {
     // stuff_categoryを作成する処理
     // TODO: rankを計算する処理を追加する
+    // const rank = await this.calcCategoryRank();
+    // console.log('rank', rank);
     const stuffCategory = this.stuffCategoryRepository.create({
       ...createStuffCategoryDto,
-      // rank: 1,
+      rank: 2,
       // propertyRegistrationNumber: 2,
       // wantRegistrationNumber: 3,
       // wantTotalAmount: 1000,
     });
-    console.log('stuffCategory', stuffCategory);
-    console.log('createStuffCategoryDto', createStuffCategoryDto);
     await this.stuffCategoryRepository.save(stuffCategory);
     return stuffCategory;
   }
 
-  async calcCategoryRank() {
-    // stuff_categoryのrankを計算する処理
+  public async calcCategoryRank() {
+    // stuff_categoryのrankを計算する処理でcategoryのpropertyLimitedNumberの数が多い順にrankをつける
+    const stuffCategories = await this.stuffCategoryRepository.find({
+      // select: {
+      //   propertyLimitedNumber: true,
+      // },
+      order: {
+        propertyLimitedNumber: 'DESC',
+      },
+    });
+    // console.log(stuffCategories);
+    console.log('stuffCategories', stuffCategories);
+    return stuffCategories;
   }
 
   async getStuffCategory() {

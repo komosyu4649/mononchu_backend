@@ -13,6 +13,11 @@ export class StuffController {
     return await this.stuffService.createStuffCategory(createStuffCategoryDto);
   }
 
+  @Get('category/calc')
+  public async calcCategoryRank() {
+    return await this.stuffService.calcCategoryRank();
+  }
+
   @Get('category')
   public async getStuffCategory() {
     return await this.stuffService.getStuffCategory();
