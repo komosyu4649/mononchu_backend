@@ -33,12 +33,12 @@ export class StuffService {
     }
   }
 
-  async getStuffCategory() {
+  public async getStuffCategory() {
     // stuff_categoryを取得する処理
     return await this.stuffCategoryRepository.find();
   }
 
-  async editStuffCategory(
+  public async editStuffCategory(
     id: number,
     createStuffCategoryDto: CreateStuffCategoryDto,
   ) {
@@ -53,5 +53,14 @@ export class StuffService {
     stuffCategory.propertyLimitedNumber =
       createStuffCategoryDto.propertyLimitedNumber;
     await this.stuffCategoryRepository.save(stuffCategory);
+  }
+
+  public async deleteStuffCategory(id: number) {
+    const stuffCategory = await this.stuffCategoryRepository.findOne({
+      where: {
+        id,
+      },
+    });
+    await this.stuffCategoryRepository.remove(stuffCategory);
   }
 }
