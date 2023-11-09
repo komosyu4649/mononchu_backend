@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { StuffService } from './stuff.service';
 import { CreateStuffCategoryDto } from './dto/create-stuff-category.dto';
 
@@ -21,5 +21,16 @@ export class StuffController {
   @Get('category')
   public async getStuffCategory() {
     return await this.stuffService.getStuffCategory();
+  }
+
+  @Patch('category/edit/:id')
+  public async editStuffCategory(
+    @Param('id') id: number,
+    @Body() createStuffCategoryDto: CreateStuffCategoryDto,
+  ) {
+    return await this.stuffService.editStuffCategory(
+      id,
+      createStuffCategoryDto,
+    );
   }
 }

@@ -13,6 +13,9 @@ export class StuffCategoryEntity implements IF {
   name: string;
 
   @Column()
+  icon: string;
+
+  @Column()
   propertyLimitedNumber: number;
 
   @Column({ nullable: true })
