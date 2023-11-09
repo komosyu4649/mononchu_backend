@@ -11,27 +11,25 @@ export class StuffService {
   ) {}
 
   public async createStuffCategory(createStuffCategoryDto) {
-    // stuff_categoryを作成する処理
-    const rank = await this.calcCategoryRank();
     const stuffCategory = this.stuffCategoryRepository.create({
       ...createStuffCategoryDto,
-      rank: rank,
     });
     await this.stuffCategoryRepository.save(stuffCategory);
+    await this.updateCategoryRanks();
     return stuffCategory;
   }
 
-  public async calcCategoryRank() {
-    // stuff_categoryのrankを計算する処理でcategoryのpropertyLimitedNumberの数が多い順にrankをつける
+  public async updateCategoryRanks() {
     const items = await this.stuffCategoryRepository.find({
       order: {
         propertyLimitedNumber: 'DESC',
       },
     });
-    items.forEach((item, index) => {
-      item.rank = index + 1;
-    });
-    return items;
+    let rank = 1;
+    for (const item of items) {
+      item.rank = rank++;
+      await this.stuffCategoryRepository.save(item);
+    }
   }
 
   async getStuffCategory() {

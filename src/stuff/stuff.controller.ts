@@ -14,8 +14,8 @@ export class StuffController {
   }
 
   @Get('category/calc')
-  public async calcCategoryRank() {
-    return await this.stuffService.calcCategoryRank();
+  public async updateCategoryRanks() {
+    return await this.stuffService.updateCategoryRanks();
   }
 
   @Get('category')

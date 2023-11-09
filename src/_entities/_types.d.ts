@@ -1,5 +1,5 @@
 export interface StuffCategory {
-  rank: number;
+  rank?: number;
   name: string;
   propertyLimitedNumber: number;
   propertyRegistrationNumber?: number;
