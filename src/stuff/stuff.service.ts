@@ -20,6 +20,14 @@ export class StuffService {
     return stuffCategory;
   }
 
+  public async getStuffCategoryById(id: number) {
+    return await this.stuffCategoryRepository.findOne({
+      where: {
+        id,
+      },
+    });
+  }
+
   public async updateCategoryRanks() {
     const items = await this.stuffCategoryRepository.find({
       order: {

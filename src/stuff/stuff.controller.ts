@@ -21,14 +21,14 @@ export class StuffController {
     return await this.stuffService.createStuffCategory(createStuffCategoryDto);
   }
 
-  @Get('category/calc')
-  public async updateCategoryRanks() {
-    return await this.stuffService.updateCategoryRanks();
-  }
-
   @Get('category')
   public async getStuffCategory() {
     return await this.stuffService.getStuffCategory();
+  }
+
+  @Get('category/:id')
+  public async getStuffCategoryById(@Param('id') id: number) {
+    return await this.stuffService.getStuffCategoryById(id);
   }
 
   @Patch('category/edit/:id')
