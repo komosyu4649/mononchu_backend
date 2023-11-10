@@ -139,4 +139,16 @@ export class StuffService {
     stuffProperty.purchasePlace = createStuffPropertyDto.purchasePlace;
     await this.stuffPropertyRepository.save(stuffProperty);
   }
+
+  public async deleteStuffProperty(categoryId: number, id: number) {
+    const stuffProperty = await this.stuffPropertyRepository.findOne({
+      where: {
+        category: {
+          id: categoryId,
+        },
+        id,
+      },
+    });
+    await this.stuffPropertyRepository.remove(stuffProperty);
+  }
 }

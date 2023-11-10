@@ -84,4 +84,12 @@ export class StuffController {
       createStuffPropertyDto,
     );
   }
+
+  @Delete('property/delete/:categoryId/:id')
+  public async deleteStuffProperty(
+    @Param('categoryId') categoryId: number,
+    @Param('id') id: number,
+  ) {
+    return await this.stuffService.deleteStuffProperty(categoryId, id);
+  }
 }
