@@ -78,11 +78,65 @@ export class StuffService {
 
   public async createStuffProperty(
     createStuffPropertyDto: CreateStuffPropertyDto,
+    categoryId: number,
   ) {
-    // stuff_propertyを作成する処理
-    this.stuffPropertyRepository.create({
+    const stuffProperty = this.stuffPropertyRepository.create({
       ...createStuffPropertyDto,
+      category: {
+        id: categoryId,
+      },
     });
-    await this.stuffPropertyRepository.save(createStuffPropertyDto);
+    await this.stuffPropertyRepository.save(stuffProperty);
+  }
+
+  public async getStuffProperty(
+    categoryId: number,
+  ): Promise<StuffPropertyEntity[]> {
+    const stuffProperty = await this.stuffPropertyRepository.find({
+      where: {
+        category: {
+          id: categoryId,
+        },
+      },
+    });
+    return stuffProperty;
+  }
+
+  public async getStuffPropertyById(
+    categoryId: number,
+    id: number,
+  ): Promise<StuffPropertyEntity> {
+    const stuffProperty = await this.stuffPropertyRepository.findOne({
+      where: {
+        category: {
+          id: categoryId,
+        },
+        id,
+      },
+    });
+    return stuffProperty;
+  }
+
+  public async editStuffProperty(
+    categoryId: number,
+    id: number,
+    createStuffPropertyDto: CreateStuffPropertyDto,
+  ) {
+    const stuffProperty = await this.stuffPropertyRepository.findOne({
+      where: {
+        category: {
+          id: categoryId,
+        },
+        id,
+      },
+    });
+    stuffProperty.name = createStuffPropertyDto.name;
+    stuffProperty.thumbnail = createStuffPropertyDto.thumbnail;
+    stuffProperty.score = createStuffPropertyDto.score;
+    stuffProperty.price = createStuffPropertyDto.price;
+    stuffProperty.address = createStuffPropertyDto.address;
+    stuffProperty.purchaseDate = createStuffPropertyDto.purchaseDate;
+    stuffProperty.purchasePlace = createStuffPropertyDto.purchasePlace;
+    await this.stuffPropertyRepository.save(stuffProperty);
   }
 }
