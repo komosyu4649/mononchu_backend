@@ -1,4 +1,5 @@
 export interface StuffCategory {
+  id: number;
   rank?: number;
   name: string;
   icon: string;
@@ -6,4 +7,15 @@ export interface StuffCategory {
   propertyRegistrationNumber?: number;
   wantRegistrationNumber?: number;
   wantTotalAmount?: number;
+}
+
+export interface StuffProperty {
+  id: number;
+  name: string;
+  thumbnail?: strgin;
+  score?: number;
+  price?: number;
+  address?: string;
+  purchaseDate?: string;
+  purchasePlace?: string;
 }

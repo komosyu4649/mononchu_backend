@@ -3,12 +3,16 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { StuffCategoryEntity } from 'src/_entities/stuff-category.entity';
 import { Repository } from 'typeorm';
 import { CreateStuffCategoryDto } from './dto/create-stuff-category.dto';
+import { CreateStuffPropertyDto } from './dto/create-sruff-property.dto';
+import { StuffPropertyEntity } from 'src/_entities/stuff-property.entity';
 
 @Injectable()
 export class StuffService {
   constructor(
     @InjectRepository(StuffCategoryEntity)
     private readonly stuffCategoryRepository: Repository<StuffCategoryEntity>,
+    @InjectRepository(StuffPropertyEntity)
+    private readonly stuffPropertyRepository: Repository<StuffPropertyEntity>,
   ) {}
 
   public async createStuffCategory(createStuffCategoryDto) {
@@ -70,5 +74,15 @@ export class StuffService {
       },
     });
     await this.stuffCategoryRepository.remove(stuffCategory);
+  }
+
+  public async createStuffProperty(
+    createStuffPropertyDto: CreateStuffPropertyDto,
+  ) {
+    // stuff_propertyを作成する処理
+    this.stuffPropertyRepository.create({
+      ...createStuffPropertyDto,
+    });
+    await this.stuffPropertyRepository.save(createStuffPropertyDto);
   }
 }

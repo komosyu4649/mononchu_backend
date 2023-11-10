@@ -7,7 +7,7 @@ export class StuffCategoryEntity implements IF {
   id: number;
 
   @Column({ nullable: true })
-  rank?: number;
+  rank: number;
 
   @Column()
   name: string;

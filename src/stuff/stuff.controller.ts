@@ -46,4 +46,9 @@ export class StuffController {
   public async deleteStuffCategory(@Param('id') id: number) {
     return await this.stuffService.deleteStuffCategory(id);
   }
+
+  @Post('property/create')
+  public async createStuffProperty(@Body() createStuffPropertyDto: any) {
+    return await this.stuffService.createStuffProperty(createStuffPropertyDto);
+  }
 }
