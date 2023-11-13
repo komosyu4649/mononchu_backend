@@ -170,7 +170,6 @@ export class StuffService {
       ...createStuffWantDto.conditions,
     });
     await this.stuffWantConditions.save(conditions);
-    console.log('conditions', conditions);
     const stuffWant = this.stuffWantRepository.create({
       ...createStuffWantDto,
       conditions,
@@ -178,7 +177,6 @@ export class StuffService {
         id: categoryId,
       },
     });
-    console.log('stuffWant', stuffWant);
     await this.stuffWantRepository.save(stuffWant);
     return stuffWant;
   }
@@ -227,10 +225,22 @@ export class StuffService {
     stuffWant.price = createStuffWantDto.price;
     stuffWant.brand = createStuffWantDto.brand;
     stuffWant.url = createStuffWantDto.url;
-    this.stuffWantConditions.update(
+    await this.stuffWantConditions.update(
       { id: stuffWant.conditions.id },
       { ...createStuffWantDto.conditions },
     );
     await this.stuffWantRepository.save(stuffWant);
+  }
+
+  public async deleteStuffWant(categoryId: number, id: number) {
+    const stuffWant = await this.stuffWantRepository.findOne({
+      where: {
+        category: {
+          id: categoryId,
+        },
+        id,
+      },
+    });
+    await this.stuffWantRepository.remove(stuffWant);
   }
 }

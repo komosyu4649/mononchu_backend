@@ -134,4 +134,12 @@ export class StuffController {
       createStuffWantDto,
     );
   }
+
+  @Delete('want/delete/:categoryId/:id')
+  public async deleteStuffWant(
+    @Param('categoryId') categoryId: number,
+    @Param('id') id: number,
+  ) {
+    return await this.stuffService.deleteStuffWant(categoryId, id);
+  }
 }
