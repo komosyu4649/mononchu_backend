@@ -19,3 +19,26 @@ export interface StuffProperty {
   purchaseDate?: string;
   purchasePlace?: string;
 }
+
+export interface StuffWant {
+  id: number;
+  name: string;
+  thumbnail?: string;
+  score?: number;
+  price?: number;
+  brand?: string;
+  url?: string;
+  conditions?: {
+    asset: number;
+    period: string;
+    property: number;
+  };
+}
+
+export interface StuffWantConditions {
+  id: number;
+  asset: number;
+  period: string;
+  property: number;
+  want: StuffWant;
+}

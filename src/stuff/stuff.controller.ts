@@ -10,11 +10,13 @@ import {
 import { StuffService } from './stuff.service';
 import { CreateStuffCategoryDto } from './dto/create-stuff-category.dto';
 import { CreateStuffPropertyDto } from './dto/create-sruff-property.dto';
+import { CreateStuffWantDto } from './dto/create-stuff-want.dto';
 
 @Controller('stuff')
 export class StuffController {
   constructor(private readonly stuffService: StuffService) {}
 
+  /** category */
   @Post('category/create')
   public async createStuffCategory(
     @Body() createStuffCategoryDto: CreateStuffCategoryDto,
@@ -48,6 +50,7 @@ export class StuffController {
     return await this.stuffService.deleteStuffCategory(id);
   }
 
+  /** property */
   @Post('property/create/:categoryId')
   public async createStuffProperty(
     @Body() createStuffPropertyDto: CreateStuffPropertyDto,
@@ -91,5 +94,44 @@ export class StuffController {
     @Param('id') id: number,
   ) {
     return await this.stuffService.deleteStuffProperty(categoryId, id);
+  }
+
+  /** want */
+  @Post('want/create/:categoryId')
+  public async createStuffWant(
+    @Body() createStuffWantDto: CreateStuffWantDto,
+    @Param('categoryId') categoryId: number,
+  ) {
+    console.log(createStuffWantDto, categoryId);
+    return await this.stuffService.createStuffWant(
+      createStuffWantDto,
+      categoryId,
+    );
+  }
+
+  @Get('want/:categoryId')
+  public async getStuffWant(@Param('categoryId') categoryId: number) {
+    return await this.stuffService.getStuffWant(categoryId);
+  }
+
+  @Get('want/:categoryId/:id')
+  public async getStuffWantById(
+    @Param('categoryId') categoryId: number,
+    @Param('id') id: number,
+  ) {
+    return await this.stuffService.getStuffWantById(categoryId, id);
+  }
+
+  @Patch('want/edit/:categoryId/:id')
+  public async editStuffWant(
+    @Param('categoryId') categoryId: number,
+    @Param('id') id: number,
+    @Body() createStuffWantDto: CreateStuffWantDto,
+  ) {
+    return await this.stuffService.editStuffWant(
+      categoryId,
+      id,
+      createStuffWantDto,
+    );
   }
 }

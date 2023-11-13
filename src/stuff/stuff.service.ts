@@ -5,6 +5,9 @@ import { Repository } from 'typeorm';
 import { CreateStuffCategoryDto } from './dto/create-stuff-category.dto';
 import { CreateStuffPropertyDto } from './dto/create-sruff-property.dto';
 import { StuffPropertyEntity } from 'src/_entities/stuff-property.entity';
+import { CreateStuffWantDto } from './dto/create-stuff-want.dto';
+import { StuffWantEntity } from 'src/_entities/stuff-want.entity';
+import { StuffWantConditions } from 'src/_entities/stuff-want-conditions.entity';
 
 @Injectable()
 export class StuffService {
@@ -13,8 +16,13 @@ export class StuffService {
     private readonly stuffCategoryRepository: Repository<StuffCategoryEntity>,
     @InjectRepository(StuffPropertyEntity)
     private readonly stuffPropertyRepository: Repository<StuffPropertyEntity>,
+    @InjectRepository(StuffWantEntity)
+    private readonly stuffWantRepository: Repository<StuffWantEntity>,
+    @InjectRepository(StuffWantConditions)
+    private readonly stuffWantConditions: Repository<StuffWantConditions>,
   ) {}
 
+  /** category */
   public async createStuffCategory(createStuffCategoryDto) {
     const stuffCategory = this.stuffCategoryRepository.create({
       ...createStuffCategoryDto,
@@ -76,6 +84,7 @@ export class StuffService {
     await this.stuffCategoryRepository.remove(stuffCategory);
   }
 
+  /** property */
   public async createStuffProperty(
     createStuffPropertyDto: CreateStuffPropertyDto,
     categoryId: number,
@@ -150,5 +159,83 @@ export class StuffService {
       },
     });
     await this.stuffPropertyRepository.remove(stuffProperty);
+  }
+
+  /** want */
+  public async createStuffWant(
+    createStuffWantDto: CreateStuffWantDto,
+    categoryId: number,
+  ) {
+    const conditions = this.stuffWantConditions.create({
+      ...createStuffWantDto.conditions,
+    });
+    await this.stuffWantConditions.save(conditions);
+    console.log('conditions', conditions);
+    const stuffWant = this.stuffWantRepository.create({
+      ...createStuffWantDto,
+      conditions,
+      category: {
+        id: categoryId,
+      },
+    });
+    console.log('stuffWant', stuffWant);
+    await this.stuffWantRepository.save(stuffWant);
+    return stuffWant;
+  }
+
+  public async getStuffWant(categoryId: number) {
+    const stuffWant = await this.stuffWantRepository.find({
+      where: {
+        category: {
+          id: categoryId,
+        },
+      },
+    });
+    return stuffWant;
+  }
+
+  public async getStuffWantById(categoryId: number, id: number) {
+    const stuffWant = await this.stuffWantRepository.findOne({
+      where: {
+        category: {
+          id: categoryId,
+        },
+        id,
+      },
+      relations: ['conditions'],
+    });
+    return stuffWant;
+  }
+
+  public async editStuffWant(
+    categoryId: number,
+    id: number,
+    createStuffWantDto: CreateStuffWantDto,
+  ) {
+    const stuffWant = await this.stuffWantRepository.findOne({
+      where: {
+        category: {
+          id: categoryId,
+        },
+        // conditions: {
+        //   id:
+        // },
+        id,
+      },
+      relations: ['conditions'],
+    });
+    stuffWant.name = createStuffWantDto.name;
+    stuffWant.thumbnail = createStuffWantDto.thumbnail;
+    stuffWant.score = createStuffWantDto.score;
+    stuffWant.price = createStuffWantDto.price;
+    stuffWant.brand = createStuffWantDto.brand;
+    stuffWant.url = createStuffWantDto.url;
+    // console.log('stuffWant.conditions.asset', stuffWant.conditions.asset);
+    stuffWant.conditions.asset = 20;
+    stuffWant.conditions.period = createStuffWantDto.conditions.period;
+    stuffWant.conditions.property = createStuffWantDto.conditions.property;
+    console.log('createStuffWantDto', createStuffWantDto);
+    console.log('stuffWant', stuffWant);
+    await this.stuffWantRepository.save(stuffWant);
   }
 }

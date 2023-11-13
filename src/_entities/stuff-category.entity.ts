@@ -1,6 +1,7 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { StuffCategory as IF } from './_types';
 import { StuffPropertyEntity } from './stuff-property.entity';
+import { StuffWantEntity } from './stuff-want.entity';
 
 @Entity('stuff_category')
 export class StuffCategoryEntity implements IF {
@@ -30,4 +31,7 @@ export class StuffCategoryEntity implements IF {
 
   @OneToMany(() => StuffPropertyEntity, (property) => property.category)
   properties: StuffPropertyEntity[];
+
+  @OneToMany(() => StuffWantEntity, (want) => want.category)
+  wants: StuffWantEntity[];
 }

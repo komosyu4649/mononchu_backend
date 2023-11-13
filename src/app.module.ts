@@ -19,7 +19,7 @@ import { StuffModule } from './stuff/stuff.module';
       username: process.env.DB_USER_NAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      synchronize: false,
+      synchronize: true, // 開発時のみとする
       logger: 'debug',
       entities: tables,
       namingStrategy: new SnakeNamingStrategy(),
