@@ -243,4 +243,27 @@ export class StuffService {
     });
     await this.stuffWantRepository.remove(stuffWant);
   }
+
+  public async moveStuffWantToStuffProperty(
+    categoryId: number,
+    id: number,
+    createStuffPropertyDto: CreateStuffPropertyDto,
+  ) {
+    const stuffWant = await this.stuffWantRepository.findOne({
+      where: {
+        category: {
+          id: categoryId,
+        },
+        id,
+      },
+    });
+    const stuffProperty = this.stuffPropertyRepository.create({
+      ...createStuffPropertyDto,
+      category: {
+        id: categoryId,
+      },
+    });
+    await this.stuffPropertyRepository.save(stuffProperty);
+    await this.stuffWantRepository.remove(stuffWant);
+  }
 }

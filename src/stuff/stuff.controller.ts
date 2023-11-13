@@ -102,7 +102,6 @@ export class StuffController {
     @Body() createStuffWantDto: CreateStuffWantDto,
     @Param('categoryId') categoryId: number,
   ) {
-    console.log(createStuffWantDto, categoryId);
     return await this.stuffService.createStuffWant(
       createStuffWantDto,
       categoryId,
@@ -141,5 +140,19 @@ export class StuffController {
     @Param('id') id: number,
   ) {
     return await this.stuffService.deleteStuffWant(categoryId, id);
+  }
+
+  // 欲しいモノから所有しているモノへ移行
+  @Post('want/to-property/:categoryId/:id')
+  public async moveStuffWantToStuffProperty(
+    @Param('categoryId') categoryId: number,
+    @Param('id') id: number,
+    @Body() createStuffPropertyDto: CreateStuffPropertyDto,
+  ) {
+    return await this.stuffService.moveStuffWantToStuffProperty(
+      categoryId,
+      id,
+      createStuffPropertyDto,
+    );
   }
 }
