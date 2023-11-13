@@ -217,9 +217,6 @@ export class StuffService {
         category: {
           id: categoryId,
         },
-        // conditions: {
-        //   id:
-        // },
         id,
       },
       relations: ['conditions'],
@@ -230,12 +227,10 @@ export class StuffService {
     stuffWant.price = createStuffWantDto.price;
     stuffWant.brand = createStuffWantDto.brand;
     stuffWant.url = createStuffWantDto.url;
-    // console.log('stuffWant.conditions.asset', stuffWant.conditions.asset);
-    stuffWant.conditions.asset = 20;
-    stuffWant.conditions.period = createStuffWantDto.conditions.period;
-    stuffWant.conditions.property = createStuffWantDto.conditions.property;
-    console.log('createStuffWantDto', createStuffWantDto);
-    console.log('stuffWant', stuffWant);
+    this.stuffWantConditions.update(
+      { id: stuffWant.conditions.id },
+      { ...createStuffWantDto.conditions },
+    );
     await this.stuffWantRepository.save(stuffWant);
   }
 }
