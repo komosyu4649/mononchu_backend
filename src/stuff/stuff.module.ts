@@ -6,6 +6,7 @@ import { StuffCategoryEntity } from 'src/_entities/stuff-category.entity';
 import { StuffPropertyEntity } from 'src/_entities/stuff-property.entity';
 import { StuffWantEntity } from 'src/_entities/stuff-want.entity';
 import { StuffWantConditions } from 'src/_entities/stuff-want-conditions.entity';
+import { StuffMemoPropertyEntity } from 'src/_entities/stuff-memo-property.entity';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { StuffWantConditions } from 'src/_entities/stuff-want-conditions.entity'
       StuffPropertyEntity,
       StuffWantEntity,
       StuffWantConditions,
+      StuffMemoPropertyEntity,
     ]),
   ],
   controllers: [StuffController],

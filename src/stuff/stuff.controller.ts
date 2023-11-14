@@ -11,6 +11,7 @@ import { StuffService } from './stuff.service';
 import { CreateStuffCategoryDto } from './dto/create-stuff-category.dto';
 import { CreateStuffPropertyDto } from './dto/create-sruff-property.dto';
 import { CreateStuffWantDto } from './dto/create-stuff-want.dto';
+import { CreateStuffMemoDto } from './dto/create-stuff-memo.dto';
 
 @Controller('stuff')
 export class StuffController {
@@ -153,6 +154,20 @@ export class StuffController {
       categoryId,
       id,
       createStuffPropertyDto,
+    );
+  }
+
+  // 所有しているモノにメモ
+  @Post('property/memo/create/:categoryId/:itemId')
+  public async createStuffMemoProperty(
+    @Param('categoryId') categoryId: number,
+    @Param('itemId') itemId: number,
+    @Body() createStuffMemoDto: CreateStuffMemoDto,
+  ) {
+    return await this.stuffService.createStuffMemoProperty(
+      categoryId,
+      itemId,
+      createStuffMemoDto,
     );
   }
 }

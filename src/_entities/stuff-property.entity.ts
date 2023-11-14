@@ -1,6 +1,13 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { StuffProperty as IF } from './_types';
 import { StuffCategoryEntity } from './stuff-category.entity';
+import { StuffMemoPropertyEntity } from './stuff-memo-property.entity';
 
 @Entity('stuff_property')
 export class StuffPropertyEntity implements IF {
@@ -30,4 +37,7 @@ export class StuffPropertyEntity implements IF {
 
   @ManyToOne(() => StuffCategoryEntity, (category) => category.properties)
   category: StuffCategoryEntity;
+
+  @OneToMany(() => StuffMemoPropertyEntity, (memo) => memo.property)
+  memos: StuffMemoPropertyEntity[];
 }

@@ -18,6 +18,7 @@ export interface StuffProperty {
   address?: string;
   purchaseDate?: string;
   purchasePlace?: string;
+  memos: StuffMemoProperty[];
 }
 
 export interface StuffWant {
@@ -41,4 +42,11 @@ export interface StuffWantConditions {
   period: string;
   property: number;
   want: StuffWant;
+}
+
+export interface StuffMemoProperty {
+  id: number;
+  fiveW: string[];
+  image: string;
+  memo: string;
 }

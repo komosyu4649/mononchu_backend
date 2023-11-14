@@ -8,6 +8,8 @@ import { StuffPropertyEntity } from 'src/_entities/stuff-property.entity';
 import { CreateStuffWantDto } from './dto/create-stuff-want.dto';
 import { StuffWantEntity } from 'src/_entities/stuff-want.entity';
 import { StuffWantConditions } from 'src/_entities/stuff-want-conditions.entity';
+import { StuffMemoPropertyEntity } from 'src/_entities/stuff-memo-property.entity';
+import { CreateStuffMemoDto } from './dto/create-stuff-memo.dto';
 
 @Injectable()
 export class StuffService {
@@ -20,6 +22,8 @@ export class StuffService {
     private readonly stuffWantRepository: Repository<StuffWantEntity>,
     @InjectRepository(StuffWantConditions)
     private readonly stuffWantConditions: Repository<StuffWantConditions>,
+    @InjectRepository(StuffMemoPropertyEntity)
+    private readonly stuffMemoPropertyRepository: Repository<StuffMemoPropertyEntity>,
   ) {}
 
   /** category */
@@ -265,5 +269,28 @@ export class StuffService {
     });
     await this.stuffPropertyRepository.save(stuffProperty);
     await this.stuffWantRepository.remove(stuffWant);
+  }
+
+  // 所有しているモノにメモ
+  public async createStuffMemoProperty(
+    categoryId: number,
+    itemId: number,
+    createStuffMemoDto: CreateStuffMemoDto,
+  ) {
+    const stuffProperty = await this.stuffPropertyRepository.findOne({
+      where: {
+        category: {
+          id: categoryId,
+        },
+        id: itemId,
+      },
+    });
+    console.log('stuffProperty', stuffProperty);
+    console.log('createStuffMemoDto', createStuffMemoDto);
+    const stuffMemoProperty = this.stuffMemoPropertyRepository.create({
+      ...createStuffMemoDto,
+      property: stuffProperty,
+    });
+    await this.stuffMemoPropertyRepository.save(stuffMemoProperty);
   }
 }
