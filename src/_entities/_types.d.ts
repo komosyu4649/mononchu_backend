@@ -44,7 +44,7 @@ export interface StuffWantConditions {
   want: StuffWant;
 }
 
-export interface StuffMemoProperty {
+export interface StuffMemo {
   id: number;
   fiveW: string[];
   image: string;

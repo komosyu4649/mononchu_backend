@@ -158,7 +158,7 @@ export class StuffController {
   }
 
   // 所有しているモノにメモ
-  @Post('property/memo/create/:categoryId/:itemId')
+  @Post('memo/property/create/:categoryId/:itemId')
   public async createStuffMemoProperty(
     @Param('categoryId') categoryId: number,
     @Param('itemId') itemId: number,
@@ -169,5 +169,87 @@ export class StuffController {
       itemId,
       createStuffMemoDto,
     );
+  }
+
+  @Get('memo/property/:categoryId/:itemId')
+  public async getStuffMemoProperty(
+    @Param('categoryId') categoryId: number,
+    @Param('itemId') itemId: number,
+  ) {
+    return await this.stuffService.getStuffMemoProperty(categoryId, itemId);
+  }
+
+  @Patch('memo/property/edit/:categoryId/:itemId/:id')
+  public async editStuffMemoProperty(
+    @Param('categoryId') categoryId: number,
+    @Param('itemId') itemId: number,
+    @Param('id') id: number,
+    @Body() createStuffMemoDto: CreateStuffMemoDto,
+  ) {
+    return await this.stuffService.editStuffMemoProperty(
+      categoryId,
+      itemId,
+      id,
+      createStuffMemoDto,
+    );
+  }
+
+  @Delete('memo/property/delete/:categoryId/:itemId/:id')
+  public async deleteStuffMemoProperty(
+    @Param('categoryId') categoryId: number,
+    @Param('itemId') itemId: number,
+    @Param('id') id: number,
+  ) {
+    return await this.stuffService.deleteStuffMemoProperty(
+      categoryId,
+      itemId,
+      id,
+    );
+  }
+
+  // 欲しいモノにメモ
+  @Post('memo/want/create/:categoryId/:itemId')
+  public async createStuffMemoWant(
+    @Param('categoryId') categoryId: number,
+    @Param('itemId') itemId: number,
+    @Body() createStuffMemoDto: CreateStuffMemoDto,
+  ) {
+    return await this.stuffService.createStuffMemoWant(
+      categoryId,
+      itemId,
+      createStuffMemoDto,
+    );
+  }
+
+  @Get('memo/want/:categoryId/:itemId')
+  public async getStuffMemoWant(
+    @Param('categoryId') categoryId: number,
+    @Param('itemId') itemId: number,
+  ) {
+    return await this.stuffService.getStuffMemoWant(categoryId, itemId);
+  }
+
+  @Patch('memo/want/edit/:categoryId/:itemId/:id')
+  public async editStuffMemoWant(
+    @Param('categoryId') categoryId: number,
+    @Param('itemId') itemId: number,
+    @Param('id') id: number,
+    @Body() createStuffMemoDto: CreateStuffMemoDto,
+  ) {
+    return await this.stuffService.editStuffMemoWant(
+      categoryId,
+      itemId,
+      id,
+      createStuffMemoDto,
+    );
+  }
+
+  @Delete('memo/want/delete/:categoryId/:itemId/:id')
+  public async deleteStuffMemoWant(
+    @Param('categoryId') categoryId: number,
+    @Param('itemId') itemId: number,
+    @Param('id') id: number,
+  ) {
+    return await this.stuffService.deleteStuffMemoWant(categoryId, itemId, id);
   }
 }

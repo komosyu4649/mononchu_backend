@@ -10,6 +10,7 @@ import { StuffWantEntity } from 'src/_entities/stuff-want.entity';
 import { StuffWantConditions } from 'src/_entities/stuff-want-conditions.entity';
 import { StuffMemoPropertyEntity } from 'src/_entities/stuff-memo-property.entity';
 import { CreateStuffMemoDto } from './dto/create-stuff-memo.dto';
+import { StuffMemoWantEntity } from 'src/_entities/stuff-memo-want.entity';
 
 @Injectable()
 export class StuffService {
@@ -24,6 +25,8 @@ export class StuffService {
     private readonly stuffWantConditions: Repository<StuffWantConditions>,
     @InjectRepository(StuffMemoPropertyEntity)
     private readonly stuffMemoPropertyRepository: Repository<StuffMemoPropertyEntity>,
+    @InjectRepository(StuffMemoWantEntity)
+    private readonly stuffMemoWantRepository: Repository<StuffMemoWantEntity>,
   ) {}
 
   /** category */
@@ -285,12 +288,150 @@ export class StuffService {
         id: itemId,
       },
     });
-    console.log('stuffProperty', stuffProperty);
-    console.log('createStuffMemoDto', createStuffMemoDto);
     const stuffMemoProperty = this.stuffMemoPropertyRepository.create({
       ...createStuffMemoDto,
       property: stuffProperty,
     });
     await this.stuffMemoPropertyRepository.save(stuffMemoProperty);
+  }
+
+  public async getStuffMemoProperty(categoryId: number, itemId: number) {
+    const stuffMemoProperty = await this.stuffMemoPropertyRepository.find({
+      where: {
+        property: {
+          category: {
+            id: categoryId,
+          },
+          id: itemId,
+        },
+      },
+    });
+    return stuffMemoProperty;
+  }
+
+  public async editStuffMemoProperty(
+    categoryId: number,
+    itemId: number,
+    id: number,
+    createStuffMemoDto: CreateStuffMemoDto,
+  ) {
+    const stuffMemoProperty = await this.stuffMemoPropertyRepository.findOne({
+      where: {
+        property: {
+          category: {
+            id: categoryId,
+          },
+          id: itemId,
+        },
+        id,
+      },
+    });
+    stuffMemoProperty.fiveW = createStuffMemoDto.fiveW;
+    stuffMemoProperty.image = createStuffMemoDto.image;
+    stuffMemoProperty.memo = createStuffMemoDto.memo;
+    console.log('stuffMemoProperty', stuffMemoProperty);
+    await this.stuffMemoPropertyRepository.save(stuffMemoProperty);
+  }
+
+  public async deleteStuffMemoProperty(
+    categoryId: number,
+    itemId: number,
+    id: number,
+  ) {
+    const stuffMemoProperty = await this.stuffMemoPropertyRepository.findOne({
+      where: {
+        property: {
+          category: {
+            id: categoryId,
+          },
+          id: itemId,
+        },
+        id,
+      },
+    });
+    await this.stuffMemoPropertyRepository.remove(stuffMemoProperty);
+  }
+
+  // 欲しいモノにメモ
+  public async createStuffMemoWant(
+    categoryId: number,
+    itemId: number,
+    createStuffMemoDto: CreateStuffMemoDto,
+  ) {
+    const stuffWant = await this.stuffWantRepository.findOne({
+      where: {
+        category: {
+          id: categoryId,
+        },
+        id: itemId,
+      },
+    });
+    // console.log(
+    //   'createStuffMemoDto',
+    //   createStuffMemoDto,
+    //   'stuffWant',
+    //   stuffWant,
+    // );
+    const stuffMemoWant = this.stuffMemoWantRepository.create({
+      ...createStuffMemoDto,
+      want: stuffWant,
+    });
+    await this.stuffMemoWantRepository.save(stuffMemoWant);
+  }
+
+  public async getStuffMemoWant(categoryId: number, itemId: number) {
+    const stuffMemoWant = await this.stuffMemoWantRepository.find({
+      where: {
+        want: {
+          category: {
+            id: categoryId,
+          },
+          id: itemId,
+        },
+      },
+    });
+    return stuffMemoWant;
+  }
+
+  public async editStuffMemoWant(
+    categoryId: number,
+    itemId: number,
+    id: number,
+    createStuffMemoDto: CreateStuffMemoDto,
+  ) {
+    const stuffMemoWant = await this.stuffMemoWantRepository.findOne({
+      where: {
+        want: {
+          category: {
+            id: categoryId,
+          },
+          id: itemId,
+        },
+        id,
+      },
+    });
+    stuffMemoWant.fiveW = createStuffMemoDto.fiveW;
+    stuffMemoWant.image = createStuffMemoDto.image;
+    stuffMemoWant.memo = createStuffMemoDto.memo;
+    await this.stuffMemoWantRepository.save(stuffMemoWant);
+  }
+
+  public async deleteStuffMemoWant(
+    categoryId: number,
+    itemId: number,
+    id: number,
+  ) {
+    const stuffMemoWant = await this.stuffMemoWantRepository.findOne({
+      where: {
+        want: {
+          category: {
+            id: categoryId,
+          },
+          id: itemId,
+        },
+        id,
+      },
+    });
+    await this.stuffMemoWantRepository.remove(stuffMemoWant);
   }
 }

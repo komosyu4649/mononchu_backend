@@ -3,12 +3,14 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { StuffWant as IF } from './_types';
 import { StuffCategoryEntity } from './stuff-category.entity';
 import { StuffWantConditions } from './stuff-want-conditions.entity';
+import { StuffMemoWantEntity } from './stuff-memo-want.entity';
 
 @Entity('stuff_want')
 export class StuffWantEntity implements IF {
@@ -39,4 +41,7 @@ export class StuffWantEntity implements IF {
 
   @ManyToOne(() => StuffCategoryEntity, (category) => category.wants)
   category: StuffCategoryEntity;
+
+  @OneToMany(() => StuffMemoWantEntity, (memo) => memo.want)
+  memos: StuffMemoWantEntity[];
 }

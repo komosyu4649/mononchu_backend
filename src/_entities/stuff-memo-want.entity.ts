@@ -1,9 +1,9 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { StuffMemo as IF } from './_types';
-import { StuffPropertyEntity } from './stuff-property.entity';
+import { StuffWantEntity } from './stuff-want.entity';
 
-@Entity('stuff_memo_property')
-export class StuffMemoPropertyEntity implements IF {
+@Entity('stuff_memo_want')
+export class StuffMemoWantEntity implements IF {
   @PrimaryGeneratedColumn({})
   id: number;
 
@@ -16,6 +16,6 @@ export class StuffMemoPropertyEntity implements IF {
   @Column()
   memo: string;
 
-  @ManyToOne(() => StuffPropertyEntity, (property) => property.memos)
-  property: StuffPropertyEntity;
+  @ManyToOne(() => StuffWantEntity, (property) => property.memos)
+  want: StuffWantEntity;
 }
