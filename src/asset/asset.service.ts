@@ -1,4 +1,39 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { AssetPropertyEntity } from 'src/_entities/asset-proerty.entity';
+import { StuffCategoryEntity } from 'src/_entities/stuff-category.entity';
+import { StuffPropertyEntity } from 'src/_entities/stuff-property.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
-export class AssetService {}
+export class AssetService {
+  constructor(
+    @InjectRepository(AssetPropertyEntity)
+    private readonly assetPropertyRepository: Repository<AssetPropertyEntity>,
+    @InjectRepository(StuffCategoryEntity)
+    private readonly stuffCategoryRepository: Repository<StuffCategoryEntity>,
+    @InjectRepository(StuffPropertyEntity)
+    private readonly stuffPropertyRepository: Repository<StuffPropertyEntity>,
+  ) {}
+  // stuff-propertyのカテゴリーからasset-propertyを作成する
+  // MEMO: この処理を実行するタイミング
+  public async getProperty() {
+    // propertyからカテゴリーのみを取得
+    const propertyCategories = await this.stuffCategoryRepository.find({
+      select: ['id'],
+      relations: ['properties'],
+    });
+    // カテゴリー毎に処理
+    propertyCategories.forEach(async (category) => {
+      // カテゴリー内propertyのpriceを合計
+      const assetProperty = await this.assetPropertyRepository.create({
+        name: category.name,
+        price: category.properties.reduce((acc, cur) => acc + cur.price, 0),
+        registrationNumber: category.properties.length,
+        category,
+      });
+      // asset-propertyに保存
+      await this.assetPropertyRepository.save(assetProperty);
+    });
+  }
+}
