@@ -6,6 +6,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    command: yarn start:dev
     ports:
       - 4000:4000
     volumes:
@@ -14,7 +15,7 @@ services:
       - db
 
   db:
-    container_name: postgres-db
+    container_name: ${DB_CONTAINER_NAME}
     image: postgres:13
     ports:
       - ${DB_PORT}:5432
