@@ -46,6 +46,7 @@ export class AssetService {
         await this.assetPropertyRepository.save(assetProperty);
       }
     }
+    return await this.assetPropertyRepository.find();
   }
 
   // stuff-wantのカテゴリーからasset-wantを作成する
@@ -62,7 +63,6 @@ export class AssetService {
         name: category.name,
         price: category.wants.reduce((acc, cur) => acc + cur.price, 0),
         registrationNumber: category.wantRegistrationNumber,
-        category,
       });
       const existingAssetWant = await this.assetWantRepository.findOne({
         where: { category: { id: category.id } },
@@ -73,5 +73,6 @@ export class AssetService {
         await this.assetWantRepository.save(assetWant);
       }
     }
+    return await this.assetWantRepository.find();
   }
 }

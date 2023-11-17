@@ -5,6 +5,7 @@ import {
   JoinColumn,
   OneToOne,
   PrimaryGeneratedColumn,
+  RelationId,
 } from 'typeorm';
 import { StuffCategoryEntity } from './stuff-category.entity';
 
@@ -25,4 +26,7 @@ export class AssetPropertyEntity implements IF {
   @OneToOne(() => StuffCategoryEntity, (category) => category.assetProperty)
   @JoinColumn({ name: 'category_id' })
   category: StuffCategoryEntity;
+
+  @RelationId((assetProperty: AssetPropertyEntity) => assetProperty.category)
+  categoryId: number;
 }
