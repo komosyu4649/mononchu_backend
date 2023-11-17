@@ -9,4 +9,10 @@ export class AssetController {
   public async getProperty() {
     return await this.assetService.getProperty();
   }
+
+  // stuff-wantのカテゴリーからasset-wantを作成する
+  @Get('want')
+  public async getWant() {
+    return await this.assetService.getWant();
+  }
 }

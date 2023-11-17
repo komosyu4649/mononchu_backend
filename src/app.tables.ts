@@ -1,4 +1,5 @@
 import { AssetPropertyEntity } from './_entities/asset-proerty.entity';
+import { AssetWantEntity } from './_entities/asset-want.entity';
 import { StuffCategoryEntity } from './_entities/stuff-category.entity';
 import { StuffMemoPropertyEntity } from './_entities/stuff-memo-property.entity';
 import { StuffMemoWantEntity } from './_entities/stuff-memo-want.entity';
@@ -14,4 +15,5 @@ export const tables = [
   StuffMemoPropertyEntity,
   StuffMemoWantEntity,
   AssetPropertyEntity,
+  AssetWantEntity,
 ];
