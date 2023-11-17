@@ -96,12 +96,34 @@ export class StuffService {
     createStuffPropertyDto: CreateStuffPropertyDto,
     categoryId: number,
   ) {
+    const stuffCategory = await this.stuffCategoryRepository.findOne({
+      where: {
+        id: categoryId,
+      },
+    });
+    const stuffPropertyItemCount = await this.stuffPropertyRepository.count({
+      where: {
+        category: {
+          id: categoryId,
+        },
+      },
+    });
+    // propertyLimitedNumberを超えている場合はエラーを返す
+    if (
+      stuffPropertyItemCount >= stuffCategory.propertyLimitedNumber &&
+      stuffCategory.propertyLimitedNumber !== 0
+    ) {
+      throw new Error('stuffPropertyItemCount is over propertyLimitedNumber');
+    }
     const stuffProperty = this.stuffPropertyRepository.create({
       ...createStuffPropertyDto,
       category: {
         id: categoryId,
       },
     });
+    // 追加時には、categoryのpropertyRegistrationNumberを更新する
+    stuffCategory.propertyRegistrationNumber = stuffPropertyItemCount + 1;
+    await this.stuffCategoryRepository.save(stuffCategory);
     await this.stuffPropertyRepository.save(stuffProperty);
   }
 
