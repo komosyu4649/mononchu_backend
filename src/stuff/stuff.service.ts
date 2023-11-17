@@ -96,18 +96,9 @@ export class StuffService {
     createStuffPropertyDto: CreateStuffPropertyDto,
     categoryId: number,
   ) {
-    const stuffCategory = await this.stuffCategoryRepository.findOne({
-      where: {
-        id: categoryId,
-      },
-    });
-    const stuffPropertyItemCount = await this.stuffPropertyRepository.count({
-      where: {
-        category: {
-          id: categoryId,
-        },
-      },
-    });
+    const stuffCategory = await this.getStuffCategoryById(categoryId);
+    const stuffPropertyItemCount =
+      await this.getStuffPropertyItemCount(categoryId);
     // propertyLimitedNumberを超えている場合はエラーを返す
     if (
       stuffPropertyItemCount >= stuffCategory.propertyLimitedNumber &&
@@ -179,6 +170,9 @@ export class StuffService {
   }
 
   public async deleteStuffProperty(categoryId: number, id: number) {
+    const stuffCategory = await this.getStuffCategoryById(categoryId);
+    const stuffPropertyItemCount =
+      await this.getStuffPropertyItemCount(categoryId);
     const stuffProperty = await this.stuffPropertyRepository.findOne({
       where: {
         category: {
@@ -187,7 +181,21 @@ export class StuffService {
         id,
       },
     });
+    // 削除時には、categoryのwantRegistrationNumberを更新する
+    stuffCategory.propertyRegistrationNumber = stuffPropertyItemCount - 1;
+    await this.stuffCategoryRepository.save(stuffCategory);
     await this.stuffPropertyRepository.remove(stuffProperty);
+  }
+
+  public async getStuffPropertyItemCount(categoryId: number) {
+    const stuffPropertyItemCount = await this.stuffPropertyRepository.count({
+      where: {
+        category: {
+          id: categoryId,
+        },
+      },
+    });
+    return stuffPropertyItemCount;
   }
 
   /** want */
