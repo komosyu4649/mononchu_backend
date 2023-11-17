@@ -203,6 +203,8 @@ export class StuffService {
     createStuffWantDto: CreateStuffWantDto,
     categoryId: number,
   ) {
+    const stuffCategory = await this.getStuffCategoryById(categoryId);
+    const stuffWantItemCount = await this.getStuffWantItemCount(categoryId);
     const conditions = this.stuffWantConditions.create({
       ...createStuffWantDto.conditions,
     });
@@ -214,6 +216,11 @@ export class StuffService {
         id: categoryId,
       },
     });
+    // 追加時には、categoryのwantRegistrationNumber/wantTotalAmountを更新する
+    stuffCategory.wantRegistrationNumber = stuffWantItemCount + 1;
+    stuffCategory.wantTotalAmount =
+      stuffCategory.wantTotalAmount + stuffWant.price;
+    await this.stuffCategoryRepository.save(stuffCategory);
     await this.stuffWantRepository.save(stuffWant);
     return stuffWant;
   }
@@ -270,6 +277,8 @@ export class StuffService {
   }
 
   public async deleteStuffWant(categoryId: number, id: number) {
+    const stuffCategory = await this.getStuffCategoryById(categoryId);
+    const stuffWantItemCount = await this.getStuffWantItemCount(categoryId);
     const stuffWant = await this.stuffWantRepository.findOne({
       where: {
         category: {
@@ -278,6 +287,11 @@ export class StuffService {
         id,
       },
     });
+    // 削除時には、categoryのwantRegistrationNumber/wantTotalAmountを更新する
+    stuffCategory.wantRegistrationNumber = stuffWantItemCount - 1;
+    stuffCategory.wantTotalAmount =
+      stuffCategory.wantTotalAmount - stuffWant.price;
+    await this.stuffCategoryRepository.save(stuffCategory);
     await this.stuffWantRepository.remove(stuffWant);
   }
 
@@ -302,6 +316,17 @@ export class StuffService {
     });
     await this.stuffPropertyRepository.save(stuffProperty);
     await this.stuffWantRepository.remove(stuffWant);
+  }
+
+  public async getStuffWantItemCount(categoryId: number) {
+    const stuffWantItemCount = await this.stuffWantRepository.count({
+      where: {
+        category: {
+          id: categoryId,
+        },
+      },
+    });
+    return stuffWantItemCount;
   }
 
   // 所有しているモノにメモ
