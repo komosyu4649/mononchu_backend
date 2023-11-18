@@ -1,7 +1,16 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { StuffCategory as IF } from './_types';
 import { StuffPropertyEntity } from './stuff-property.entity';
 import { StuffWantEntity } from './stuff-want.entity';
+import { AssetPropertyEntity } from './asset-proerty.entity';
+import { AssetWantEntity } from './asset-want.entity';
 
 @Entity('stuff_category')
 export class StuffCategoryEntity implements IF {
@@ -34,4 +43,15 @@ export class StuffCategoryEntity implements IF {
 
   @OneToMany(() => StuffWantEntity, (want) => want.category)
   wants: StuffWantEntity[];
+
+  @OneToOne(
+    () => AssetPropertyEntity,
+    (assetProperty) => assetProperty.category,
+  )
+  @JoinColumn({ name: 'asset_property_id' })
+  assetProperty: AssetPropertyEntity;
+
+  @OneToMany(() => AssetWantEntity, (want) => want.category)
+  @JoinColumn({ name: 'asset_want_id' })
+  assetWants: AssetWantEntity[];
 }

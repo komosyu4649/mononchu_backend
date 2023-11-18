@@ -50,3 +50,11 @@ export interface StuffMemo {
   image: string;
   memo: string;
 }
+
+export interface AssetProperty {
+  id: number;
+  name: string;
+  price: number;
+  registrationNumber: number;
+  category: StuffCategory;
+}

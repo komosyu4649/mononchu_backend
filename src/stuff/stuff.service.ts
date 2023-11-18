@@ -96,12 +96,25 @@ export class StuffService {
     createStuffPropertyDto: CreateStuffPropertyDto,
     categoryId: number,
   ) {
+    const stuffCategory = await this.getStuffCategoryById(categoryId);
+    const stuffPropertyItemCount =
+      await this.getStuffPropertyItemCount(categoryId);
+    // propertyLimitedNumberを超えている場合はエラーを返す
+    if (
+      stuffPropertyItemCount >= stuffCategory.propertyLimitedNumber &&
+      stuffCategory.propertyLimitedNumber !== 0
+    ) {
+      throw new Error('stuffPropertyItemCount is over propertyLimitedNumber');
+    }
     const stuffProperty = this.stuffPropertyRepository.create({
       ...createStuffPropertyDto,
       category: {
         id: categoryId,
       },
     });
+    // 追加時には、categoryのpropertyRegistrationNumberを更新する
+    stuffCategory.propertyRegistrationNumber = stuffPropertyItemCount + 1;
+    await this.stuffCategoryRepository.save(stuffCategory);
     await this.stuffPropertyRepository.save(stuffProperty);
   }
 
@@ -157,6 +170,9 @@ export class StuffService {
   }
 
   public async deleteStuffProperty(categoryId: number, id: number) {
+    const stuffCategory = await this.getStuffCategoryById(categoryId);
+    const stuffPropertyItemCount =
+      await this.getStuffPropertyItemCount(categoryId);
     const stuffProperty = await this.stuffPropertyRepository.findOne({
       where: {
         category: {
@@ -165,7 +181,21 @@ export class StuffService {
         id,
       },
     });
+    // 削除時には、categoryのwantRegistrationNumberを更新する
+    stuffCategory.propertyRegistrationNumber = stuffPropertyItemCount - 1;
+    await this.stuffCategoryRepository.save(stuffCategory);
     await this.stuffPropertyRepository.remove(stuffProperty);
+  }
+
+  public async getStuffPropertyItemCount(categoryId: number) {
+    const stuffPropertyItemCount = await this.stuffPropertyRepository.count({
+      where: {
+        category: {
+          id: categoryId,
+        },
+      },
+    });
+    return stuffPropertyItemCount;
   }
 
   /** want */
@@ -173,6 +203,8 @@ export class StuffService {
     createStuffWantDto: CreateStuffWantDto,
     categoryId: number,
   ) {
+    const stuffCategory = await this.getStuffCategoryById(categoryId);
+    const stuffWantItemCount = await this.getStuffWantItemCount(categoryId);
     const conditions = this.stuffWantConditions.create({
       ...createStuffWantDto.conditions,
     });
@@ -184,6 +216,11 @@ export class StuffService {
         id: categoryId,
       },
     });
+    // 追加時には、categoryのwantRegistrationNumber/wantTotalAmountを更新する
+    stuffCategory.wantRegistrationNumber = stuffWantItemCount + 1;
+    stuffCategory.wantTotalAmount =
+      stuffCategory.wantTotalAmount + stuffWant.price;
+    await this.stuffCategoryRepository.save(stuffCategory);
     await this.stuffWantRepository.save(stuffWant);
     return stuffWant;
   }
@@ -240,6 +277,8 @@ export class StuffService {
   }
 
   public async deleteStuffWant(categoryId: number, id: number) {
+    const stuffCategory = await this.getStuffCategoryById(categoryId);
+    const stuffWantItemCount = await this.getStuffWantItemCount(categoryId);
     const stuffWant = await this.stuffWantRepository.findOne({
       where: {
         category: {
@@ -248,6 +287,11 @@ export class StuffService {
         id,
       },
     });
+    // 削除時には、categoryのwantRegistrationNumber/wantTotalAmountを更新する
+    stuffCategory.wantRegistrationNumber = stuffWantItemCount - 1;
+    stuffCategory.wantTotalAmount =
+      stuffCategory.wantTotalAmount - stuffWant.price;
+    await this.stuffCategoryRepository.save(stuffCategory);
     await this.stuffWantRepository.remove(stuffWant);
   }
 
@@ -272,6 +316,17 @@ export class StuffService {
     });
     await this.stuffPropertyRepository.save(stuffProperty);
     await this.stuffWantRepository.remove(stuffWant);
+  }
+
+  public async getStuffWantItemCount(categoryId: number) {
+    const stuffWantItemCount = await this.stuffWantRepository.count({
+      where: {
+        category: {
+          id: categoryId,
+        },
+      },
+    });
+    return stuffWantItemCount;
   }
 
   // 所有しているモノにメモ
