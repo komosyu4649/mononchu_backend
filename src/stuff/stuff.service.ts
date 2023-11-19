@@ -62,7 +62,11 @@ export class StuffService {
 
   public async getStuffCategory() {
     // stuff_categoryを取得する処理
-    return await this.stuffCategoryRepository.find();
+    return await this.stuffCategoryRepository.find({
+      order: {
+        rank: 'ASC',
+      },
+    });
   }
 
   public async editStuffCategory(

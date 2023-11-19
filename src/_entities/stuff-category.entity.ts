@@ -23,7 +23,7 @@ export class StuffCategoryEntity implements IF {
   @Column()
   name: string;
 
-  @Column()
+  @Column({ nullable: true })
   icon: string;
 
   @Column()
