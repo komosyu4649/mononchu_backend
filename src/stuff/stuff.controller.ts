@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { StuffService } from './stuff.service';
 import { CreateStuffCategoryDto } from './dto/create-stuff-category.dto';
@@ -64,8 +65,11 @@ export class StuffController {
   }
 
   @Get('property/:categoryId')
-  public async getStuffProperty(@Param('categoryId') categoryId: number) {
-    return await this.stuffService.getStuffProperty(categoryId);
+  public async getStuffProperty(
+    @Param('categoryId') categoryId: number,
+    @Query('limit') limit?: number,
+  ) {
+    return await this.stuffService.getStuffProperty(categoryId, limit);
   }
 
   @Get('property/:categoryId/:id')
@@ -110,8 +114,11 @@ export class StuffController {
   }
 
   @Get('want/:categoryId')
-  public async getStuffWant(@Param('categoryId') categoryId: number) {
-    return await this.stuffService.getStuffWant(categoryId);
+  public async getStuffWant(
+    @Param('categoryId') categoryId: number,
+    @Query('limit') limit?: number,
+  ) {
+    return await this.stuffService.getStuffWant(categoryId, limit);
   }
 
   @Get('want/:categoryId/:id')

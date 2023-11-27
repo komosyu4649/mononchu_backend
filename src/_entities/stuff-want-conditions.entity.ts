@@ -13,8 +13,8 @@ export class StuffWantConditions implements IF {
   @PrimaryGeneratedColumn({})
   id: number;
 
-  @Column()
-  asset: number;
+  @Column({ nullable: true })
+  asset: string;
 
   @Column()
   period: string;

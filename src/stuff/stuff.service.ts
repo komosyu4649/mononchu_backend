@@ -39,11 +39,21 @@ export class StuffService {
     return stuffCategory;
   }
 
+  public async getStuffCategory() {
+    // stuff_categoryを取得する処理
+    return await this.stuffCategoryRepository.find({
+      order: {
+        rank: 'ASC',
+      },
+    });
+  }
+
   public async getStuffCategoryById(id: number) {
     return await this.stuffCategoryRepository.findOne({
       where: {
         id,
       },
+      // relations: ['properties', 'wants'],
     });
   }
 
@@ -58,15 +68,6 @@ export class StuffService {
       item.rank = rank++;
       await this.stuffCategoryRepository.save(item);
     }
-  }
-
-  public async getStuffCategory() {
-    // stuff_categoryを取得する処理
-    return await this.stuffCategoryRepository.find({
-      order: {
-        rank: 'ASC',
-      },
-    });
   }
 
   public async editStuffCategory(
@@ -124,6 +125,7 @@ export class StuffService {
 
   public async getStuffProperty(
     categoryId: number,
+    limit?: number,
   ): Promise<StuffPropertyEntity[]> {
     const stuffProperty = await this.stuffPropertyRepository.find({
       where: {
@@ -131,6 +133,7 @@ export class StuffService {
           id: categoryId,
         },
       },
+      take: limit,
     });
     return stuffProperty;
   }
@@ -229,13 +232,14 @@ export class StuffService {
     return stuffWant;
   }
 
-  public async getStuffWant(categoryId: number) {
+  public async getStuffWant(categoryId: number, limit?: number) {
     const stuffWant = await this.stuffWantRepository.find({
       where: {
         category: {
           id: categoryId,
         },
       },
+      take: limit,
     });
     return stuffWant;
   }

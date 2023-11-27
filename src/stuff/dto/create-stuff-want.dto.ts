@@ -21,7 +21,7 @@ export class CreateStuffWantDto {
 
   @IsJSON()
   conditions: {
-    asset: number;
+    asset: string;
     period: string;
     property: number;
   };

@@ -30,7 +30,7 @@ export interface StuffWant {
   brand?: string;
   url?: string;
   conditions?: {
-    asset: number;
+    asset: string;
     period: string;
     property: number;
   };
@@ -38,7 +38,7 @@ export interface StuffWant {
 
 export interface StuffWantConditions {
   id: number;
-  asset: number;
+  asset: string;
   period: string;
   property: number;
   want: StuffWant;
