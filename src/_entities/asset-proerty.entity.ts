@@ -1,4 +1,4 @@
-import { AssetProperty as IF } from './_types';
+import { Asset as IF } from './_types';
 import {
   Column,
   Entity,

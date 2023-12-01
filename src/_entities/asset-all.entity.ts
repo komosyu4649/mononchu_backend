@@ -6,11 +6,10 @@ import {
   PrimaryGeneratedColumn,
   RelationId,
 } from 'typeorm';
-import { Asset as IF } from './_types';
 import { StuffCategoryEntity } from './stuff-category.entity';
 
-@Entity('asset_want')
-export class AssetWantEntity implements IF {
+@Entity('asset_all')
+export class AssetAllEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -27,6 +26,6 @@ export class AssetWantEntity implements IF {
   @JoinColumn({ name: 'category_id' })
   category: StuffCategoryEntity;
 
-  @RelationId((assetWant: AssetWantEntity) => assetWant.category)
+  @RelationId((assetAll: AssetAllEntity) => assetAll.category)
   categoryId: number;
 }

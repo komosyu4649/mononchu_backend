@@ -12,7 +12,7 @@ export interface StuffCategory {
 export interface StuffProperty {
   id: number;
   name: string;
-  thumbnail?: strgin;
+  thumbnail?: string;
   score?: number;
   price?: number;
   address?: string;
@@ -51,7 +51,7 @@ export interface StuffMemo {
   memo: string;
 }
 
-export interface AssetProperty {
+export interface Asset {
   id: number;
   name: string;
   price: number;

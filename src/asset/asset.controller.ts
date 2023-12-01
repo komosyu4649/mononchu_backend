@@ -15,4 +15,9 @@ export class AssetController {
   public async getWant() {
     return await this.assetService.getWant();
   }
+
+  @Get('all')
+  public async getAll() {
+    return await this.assetService.getAll();
+  }
 }

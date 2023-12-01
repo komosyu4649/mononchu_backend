@@ -11,6 +11,7 @@ import { StuffPropertyEntity } from './stuff-property.entity';
 import { StuffWantEntity } from './stuff-want.entity';
 import { AssetPropertyEntity } from './asset-proerty.entity';
 import { AssetWantEntity } from './asset-want.entity';
+import { AssetAllEntity } from './asset-all.entity';
 
 @Entity('stuff_category')
 export class StuffCategoryEntity implements IF {
@@ -51,7 +52,11 @@ export class StuffCategoryEntity implements IF {
   @JoinColumn({ name: 'asset_property_id' })
   assetProperty: AssetPropertyEntity;
 
-  @OneToMany(() => AssetWantEntity, (want) => want.category)
+  @OneToOne(() => AssetWantEntity, (assetWants) => assetWants.category)
   @JoinColumn({ name: 'asset_want_id' })
-  assetWants: AssetWantEntity[];
+  assetWants: AssetWantEntity;
+
+  @OneToOne(() => AssetAllEntity, (assetAll) => assetAll.category)
+  @JoinColumn({ name: 'asset_all_id' })
+  assetAll: AssetAllEntity;
 }

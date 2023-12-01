@@ -75,4 +75,40 @@ export class AssetService {
     }
     return await this.assetWantRepository.find();
   }
+
+  // propertyとwantを合わせたものを作成する
+  public async getAll() {
+    const allCategories = await this.stuffCategoryRepository.find({
+      select: [
+        'id',
+        'name',
+        'propertyRegistrationNumber',
+        'wantRegistrationNumber',
+      ],
+      relations: ['properties', 'wants'],
+    });
+    // カテゴリー毎に処理
+    for (const category of allCategories) {
+      const assetAll = await this.assetPropertyRepository.create({
+        name: category.name,
+        price:
+          category.properties.reduce((acc, cur) => acc + cur.price, 0) +
+          category.wants.reduce((acc, cur) => acc + cur.price, 0),
+        registrationNumber:
+          category.propertyRegistrationNumber + category.wantRegistrationNumber,
+      });
+      const existingAssetAll = await this.assetPropertyRepository.findOne({
+        where: { category: { id: category.id } },
+      });
+      if (existingAssetAll) {
+        await this.assetPropertyRepository.update(
+          existingAssetAll.id,
+          assetAll,
+        );
+      } else {
+        await this.assetPropertyRepository.save(assetAll);
+      }
+    }
+    return await this.assetPropertyRepository.find();
+  }
 }

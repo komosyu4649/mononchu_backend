@@ -30,10 +30,14 @@ export class StuffService {
   ) {}
 
   /** category */
-  public async createStuffCategory(createStuffCategoryDto) {
+  public async createStuffCategory(
+    createStuffCategoryDto: CreateStuffCategoryDto,
+  ) {
+    console.log('createStuffCategoryDto', createStuffCategoryDto);
     const stuffCategory = this.stuffCategoryRepository.create({
       ...createStuffCategoryDto,
     });
+    console.log('stuffCategory', stuffCategory);
     await this.stuffCategoryRepository.save(stuffCategory);
     await this.updateCategoryRanks();
     return stuffCategory;
