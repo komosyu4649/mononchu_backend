@@ -45,20 +45,51 @@ export class StuffService {
 
   public async getStuffCategory() {
     // stuff_categoryを取得する処理
-    return await this.stuffCategoryRepository.find({
+    const stuffCategories = await this.stuffCategoryRepository.find({
       order: {
         rank: 'ASC',
       },
     });
+    // categoryごとのwantTotalAmountを計算する
+    for (const stuffCategory of stuffCategories) {
+      const stuffWantTotalAmount = await this.stuffWantRepository.find({
+        where: {
+          category: {
+            id: stuffCategory.id,
+          },
+        },
+      });
+      stuffCategory.wantTotalAmount = stuffWantTotalAmount.reduce(
+        (acc, cur) => acc + cur.price,
+        0,
+      );
+    }
+
+    return stuffCategories;
   }
 
   public async getStuffCategoryById(id: number) {
-    return await this.stuffCategoryRepository.findOne({
+    const stuffCategory = await this.stuffCategoryRepository.findOne({
       where: {
         id,
       },
       // relations: ['properties', 'wants'],
     });
+    // console.log('stuffCategory', stuffCategory);
+    // wantTotalAmountを計算する
+    const stuffWantTotalAmount = await this.stuffWantRepository.find({
+      where: {
+        category: {
+          id,
+        },
+      },
+    });
+    stuffCategory.wantTotalAmount = stuffWantTotalAmount.reduce(
+      (acc, cur) => acc + cur.price,
+      0,
+    );
+    // console.log('stuffWantTotalAmount', stuffWantTotalAmount);
+    return stuffCategory;
   }
 
   public async updateCategoryRanks() {
@@ -214,8 +245,8 @@ export class StuffService {
     createStuffWantDto: CreateStuffWantDto,
     categoryId: number,
   ) {
-    const stuffCategory = await this.getStuffCategoryById(categoryId);
-    const stuffWantItemCount = await this.getStuffWantItemCount(categoryId);
+    // const stuffCategory = await this.getStuffCategoryById(categoryId);
+    // const stuffWantItemCount = await this.getStuffWantItemCount(categoryId);
     const conditions = this.stuffWantConditions.create({
       ...createStuffWantDto.conditions,
     });
@@ -228,10 +259,11 @@ export class StuffService {
       },
     });
     // 追加時には、categoryのwantRegistrationNumber/wantTotalAmountを更新する
-    stuffCategory.wantRegistrationNumber = stuffWantItemCount + 1;
-    stuffCategory.wantTotalAmount =
-      stuffCategory.wantTotalAmount + stuffWant.price;
-    await this.stuffCategoryRepository.save(stuffCategory);
+    // stuffCategory.wantRegistrationNumber = stuffWantItemCount + 1;
+    // stuffCategory.wantTotalAmount = 0;
+    // console.log(stuffCategory, stuffWant);
+    // stuffCategory.wantTotalAmount + stuffWant.price;
+    // await this.stuffCategoryRepository.save(stuffCategory);
     await this.stuffWantRepository.save(stuffWant);
     return stuffWant;
   }
@@ -285,12 +317,16 @@ export class StuffService {
       { id: stuffWant.conditions.id },
       { ...createStuffWantDto.conditions },
     );
+    // // 更新時には、categoryのwantRegistrationNumber/wantTotalAmountを更新する
+    // const stuffCategory = await this.getStuffCategoryById(categoryId);
+    // stuffCategory.wantTotalAmount =
+    //   stuffCategory.wantTotalAmount - stuffWant.price;
     await this.stuffWantRepository.save(stuffWant);
   }
 
   public async deleteStuffWant(categoryId: number, id: number) {
-    const stuffCategory = await this.getStuffCategoryById(categoryId);
-    const stuffWantItemCount = await this.getStuffWantItemCount(categoryId);
+    // const stuffCategory = await this.getStuffCategoryById(categoryId);
+    // const stuffWantItemCount = await this.getStuffWantItemCount(categoryId);
     const stuffWant = await this.stuffWantRepository.findOne({
       where: {
         category: {
@@ -299,11 +335,11 @@ export class StuffService {
         id,
       },
     });
-    // 削除時には、categoryのwantRegistrationNumber/wantTotalAmountを更新する
-    stuffCategory.wantRegistrationNumber = stuffWantItemCount - 1;
-    stuffCategory.wantTotalAmount =
-      stuffCategory.wantTotalAmount - stuffWant.price;
-    await this.stuffCategoryRepository.save(stuffCategory);
+    // // 削除時には、categoryのwantRegistrationNumber/wantTotalAmountを更新する
+    // stuffCategory.wantRegistrationNumber = stuffWantItemCount - 1;
+    // stuffCategory.wantTotalAmount =
+    //   stuffCategory.wantTotalAmount - stuffWant.price;
+    // await this.stuffCategoryRepository.save(stuffCategory);
     await this.stuffWantRepository.remove(stuffWant);
   }
 

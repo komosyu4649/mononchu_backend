@@ -16,10 +16,10 @@ export class StuffWantConditions implements IF {
   @Column({ nullable: true })
   asset: string;
 
-  @Column()
+  @Column({ nullable: true })
   period: string;
 
-  @Column()
+  @Column({ nullable: true })
   property: number;
 
   @OneToOne(() => StuffWantEntity, (want) => want.conditions)
