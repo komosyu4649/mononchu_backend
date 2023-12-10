@@ -412,6 +412,25 @@ export class StuffService {
     return stuffMemoProperty;
   }
 
+  public async getStuffMemoPropertyById(
+    categoryId: number,
+    itemId: number,
+    id: number,
+  ) {
+    const stuffMemoProperty = await this.stuffMemoPropertyRepository.findOne({
+      where: {
+        property: {
+          category: {
+            id: categoryId,
+          },
+          id: itemId,
+        },
+        id,
+      },
+    });
+    return stuffMemoProperty;
+  }
+
   public async editStuffMemoProperty(
     categoryId: number,
     itemId: number,
@@ -491,6 +510,25 @@ export class StuffService {
           },
           id: itemId,
         },
+      },
+    });
+    return stuffMemoWant;
+  }
+
+  public async getStuffMemoWantById(
+    categoryId: number,
+    itemId: number,
+    id: number,
+  ) {
+    const stuffMemoWant = await this.stuffMemoWantRepository.findOne({
+      where: {
+        want: {
+          category: {
+            id: categoryId,
+          },
+          id: itemId,
+        },
+        id,
       },
     });
     return stuffMemoWant;

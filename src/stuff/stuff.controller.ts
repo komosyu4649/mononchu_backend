@@ -186,6 +186,19 @@ export class StuffController {
     return await this.stuffService.getStuffMemoProperty(categoryId, itemId);
   }
 
+  @Get('memo/property/:categoryId/:itemId/:id')
+  public async getStuffMemoPropertyById(
+    @Param('categoryId') categoryId: number,
+    @Param('itemId') itemId: number,
+    @Param('id') id: number,
+  ) {
+    return await this.stuffService.getStuffMemoPropertyById(
+      categoryId,
+      itemId,
+      id,
+    );
+  }
+
   @Patch('memo/property/edit/:categoryId/:itemId/:id')
   public async editStuffMemoProperty(
     @Param('categoryId') categoryId: number,
@@ -234,6 +247,15 @@ export class StuffController {
     @Param('itemId') itemId: number,
   ) {
     return await this.stuffService.getStuffMemoWant(categoryId, itemId);
+  }
+
+  @Get('memo/want/:categoryId/:itemId/:id')
+  public async getStuffMemoWantById(
+    @Param('categoryId') categoryId: number,
+    @Param('itemId') itemId: number,
+    @Param('id') id: number,
+  ) {
+    return await this.stuffService.getStuffMemoWantById(categoryId, itemId, id);
   }
 
   @Patch('memo/want/edit/:categoryId/:itemId/:id')
