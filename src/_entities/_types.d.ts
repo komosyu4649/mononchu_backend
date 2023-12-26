@@ -58,3 +58,14 @@ export interface Asset {
   registrationNumber: number;
   category: StuffCategory;
 }
+
+export interface User {
+  id: number;
+  name: string;
+  email: string;
+  password: string;
+  // assets: Asset[];
+  // properties: StuffProperty[];
+  // wants: StuffWant[];
+  // memos: StuffMemo[];
+}

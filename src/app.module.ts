@@ -7,6 +7,8 @@ import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import { tables } from './app.tables';
 import { StuffModule } from './stuff/stuff.module';
 import { AssetModule } from './asset/asset.module';
+import { UserModule } from './user/user.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -27,6 +29,8 @@ import { AssetModule } from './asset/asset.module';
     }),
     StuffModule,
     AssetModule,
+    UserModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
