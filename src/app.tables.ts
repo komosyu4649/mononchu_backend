@@ -7,6 +7,7 @@ import { StuffMemoWantEntity } from './_entities/stuff-memo-want.entity';
 import { StuffPropertyEntity } from './_entities/stuff-property.entity';
 import { StuffWantConditions } from './_entities/stuff-want-conditions.entity';
 import { StuffWantEntity } from './_entities/stuff-want.entity';
+import { UserEntity } from './_entities/user.entity';
 
 export const tables = [
   StuffCategoryEntity,
@@ -18,4 +19,5 @@ export const tables = [
   AssetPropertyEntity,
   AssetWantEntity,
   AssetAllEntity,
+  UserEntity,
 ];
