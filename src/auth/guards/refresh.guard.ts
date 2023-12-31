@@ -30,6 +30,6 @@ export class RefreshGuard implements CanActivate {
     const [type, token] = request.headers.authorization.split(' ') ?? [];
     console.log('type', type);
     console.log('token', token);
-    return type === 'e' ? token : undefined;
+    return type === 'Refresh' ? token : undefined;
   }
 }
