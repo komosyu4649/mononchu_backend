@@ -8,6 +8,7 @@ import { StuffWantEntity } from 'src/_entities/stuff-want.entity';
 import { StuffWantConditions } from 'src/_entities/stuff-want-conditions.entity';
 import { StuffMemoPropertyEntity } from 'src/_entities/stuff-memo-property.entity';
 import { StuffMemoWantEntity } from 'src/_entities/stuff-memo-want.entity';
+import { JwtService } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -21,6 +22,6 @@ import { StuffMemoWantEntity } from 'src/_entities/stuff-memo-want.entity';
     ]),
   ],
   controllers: [StuffController],
-  providers: [StuffService],
+  providers: [StuffService, JwtService],
 })
 export class StuffModule {}
