@@ -15,7 +15,8 @@ async function bootstrap() {
     credentials: true,
     origin: process.env.FRONTEND_URL,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-    allowedHeaders: 'Origin, X-Requested-With, Content-Type, Accept',
+    allowedHeaders:
+      'Authorization,Origin, X-Requested-With, Content-Type, Accept',
   });
   await app.listen(4000);
 }

@@ -21,17 +21,19 @@ export class StuffController {
   constructor(private readonly stuffService: StuffService) {}
 
   /** category */
+  @UseGuards(JwtGuard)
   @Post('category/create')
   public async createStuffCategory(
     @Body() createStuffCategoryDto: CreateStuffCategoryDto,
   ) {
+    console.log(111, createStuffCategoryDto);
     return await this.stuffService.createStuffCategory(createStuffCategoryDto);
   }
 
   @UseGuards(JwtGuard)
-  @Get('category')
-  public async getStuffCategory() {
-    return await this.stuffService.getStuffCategory();
+  @Get('category/all/:userId')
+  public async getStuffCategory(@Param('userId') userId: number) {
+    return await this.stuffService.getStuffCategory(userId);
   }
 
   @Get('category/:id')

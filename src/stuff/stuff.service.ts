@@ -43,13 +43,18 @@ export class StuffService {
     return stuffCategory;
   }
 
-  public async getStuffCategory() {
+  public async getStuffCategory(userId: number) {
+    console.log('userId', userId);
     // stuff_categoryを取得する処理
     const stuffCategories = await this.stuffCategoryRepository.find({
+      where: {
+        userId,
+      },
       order: {
         rank: 'ASC',
       },
     });
+    console.log('stuffCategories', stuffCategories);
     // categoryごとのwantTotalAmountを計算する
     for (const stuffCategory of stuffCategories) {
       const stuffWantTotalAmount = await this.stuffWantRepository.find({

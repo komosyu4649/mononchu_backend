@@ -1,5 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { User as IF } from './_types';
+import { StuffCategoryEntity } from './stuff-category.entity';
 
 @Entity('user')
 export class UserEntity implements IF {
@@ -14,4 +15,7 @@ export class UserEntity implements IF {
 
   @Column()
   password: string;
+
+  @OneToMany(() => StuffCategoryEntity, (category) => category.userId)
+  category: StuffCategoryEntity;
 }

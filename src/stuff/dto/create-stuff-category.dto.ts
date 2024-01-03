@@ -9,4 +9,7 @@ export class CreateStuffCategoryDto {
 
   @IsNumber()
   propertyLimitedNumber: number;
+
+  @IsNumber()
+  userId: number;
 }

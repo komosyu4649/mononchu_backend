@@ -2,6 +2,7 @@ import {
   Column,
   Entity,
   JoinColumn,
+  ManyToOne,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -12,6 +13,7 @@ import { StuffWantEntity } from './stuff-want.entity';
 import { AssetPropertyEntity } from './asset-proerty.entity';
 import { AssetWantEntity } from './asset-want.entity';
 import { AssetAllEntity } from './asset-all.entity';
+import { UserEntity } from './user.entity';
 
 @Entity('stuff_category')
 export class StuffCategoryEntity implements IF {
@@ -59,4 +61,11 @@ export class StuffCategoryEntity implements IF {
   @OneToOne(() => AssetAllEntity, (assetAll) => assetAll.category)
   @JoinColumn({ name: 'asset_all_id' })
   assetAll: AssetAllEntity;
+
+  @Column({ name: 'user_id', nullable: true }) // Change this line
+  userId: number;
+
+  @ManyToOne(() => UserEntity)
+  @JoinColumn({ name: 'user_id', referencedColumnName: 'id' })
+  user: UserEntity;
 }
