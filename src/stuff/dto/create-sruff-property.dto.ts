@@ -10,7 +10,7 @@ export class CreateStuffPropertyDto {
   @IsNumber()
   score: number;
 
-  @IsNumber() å;
+  @IsNumber()
   price: number;
 
   @IsString()

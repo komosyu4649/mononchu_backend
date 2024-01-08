@@ -33,18 +33,19 @@ export class StuffService {
   public async createStuffCategory(
     createStuffCategoryDto: CreateStuffCategoryDto,
   ) {
-    console.log('createStuffCategoryDto', createStuffCategoryDto);
+    // console.log('createStuffCategoryDto', createStuffCategoryDto);
     const stuffCategory = this.stuffCategoryRepository.create({
       ...createStuffCategoryDto,
     });
-    console.log('stuffCategory', stuffCategory);
+    // console.log('stuffCategory', stuffCategory);
+    const { userId } = createStuffCategoryDto;
     await this.stuffCategoryRepository.save(stuffCategory);
-    await this.updateCategoryRanks();
+    await this.updateCategoryRanks(userId);
     return stuffCategory;
   }
 
-  public async getStuffCategory(userId: number) {
-    console.log('userId', userId);
+  public async getStuffUserCategory(userId: number) {
+    // console.log('userId', userId);
     // stuff_categoryを取得する処理
     const stuffCategories = await this.stuffCategoryRepository.find({
       where: {
@@ -54,7 +55,7 @@ export class StuffService {
         rank: 'ASC',
       },
     });
-    console.log('stuffCategories', stuffCategories);
+    // console.log('stuffCategories', stuffCategories);
     // categoryごとのwantTotalAmountを計算する
     for (const stuffCategory of stuffCategories) {
       const stuffWantTotalAmount = await this.stuffWantRepository.find({
@@ -97,12 +98,16 @@ export class StuffService {
     return stuffCategory;
   }
 
-  public async updateCategoryRanks() {
+  public async updateCategoryRanks(userId) {
     const items = await this.stuffCategoryRepository.find({
+      where: {
+        userId,
+      },
       order: {
         propertyLimitedNumber: 'DESC',
       },
     });
+    // console.log('update', items);
     let rank = 1;
     for (const item of items) {
       item.rank = rank++;
@@ -127,12 +132,16 @@ export class StuffService {
     await this.stuffCategoryRepository.save(stuffCategory);
   }
 
-  public async deleteStuffCategory(id: number) {
+  public async deleteStuffCategory(userId: number, id: number) {
+    console.log('userId', userId);
+    console.log('id', id);
     const stuffCategory = await this.stuffCategoryRepository.findOne({
       where: {
+        userId,
         id,
       },
     });
+    console.log('stuffCategory', stuffCategory);
     await this.stuffCategoryRepository.remove(stuffCategory);
   }
 
@@ -456,7 +465,7 @@ export class StuffService {
     stuffMemoProperty.fiveW = createStuffMemoDto.fiveW;
     stuffMemoProperty.image = createStuffMemoDto.image;
     stuffMemoProperty.memo = createStuffMemoDto.memo;
-    console.log('stuffMemoProperty', stuffMemoProperty);
+    // console.log('stuffMemoProperty', stuffMemoProperty);
     await this.stuffMemoPropertyRepository.save(stuffMemoProperty);
   }
 

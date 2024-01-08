@@ -28,8 +28,8 @@ export class RefreshGuard implements CanActivate {
 
   private extractTokenFromHeader(request: Request): string {
     const [type, token] = request.headers.authorization.split(' ') ?? [];
-    console.log('type', type);
-    console.log('token', token);
+    // console.log('type', type);
+    // console.log('token', token);
     return type === 'Refresh' ? token : undefined;
   }
 }

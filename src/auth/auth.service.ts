@@ -4,7 +4,7 @@ import { UserService } from 'src/user/user.service';
 import { compare } from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
 
-const EXPIRE_TIME = 20 * 1000;
+const EXPIRE_TIME = 20 * 100000;
 @Injectable()
 export class AuthService {
   constructor(
@@ -40,7 +40,7 @@ export class AuthService {
     const user = await this.userService.findByEmail(dto.username);
     if (user && (await compare(dto.password, user.password))) {
       const { password, ...result } = user;
-      console.log(password, result);
+      // console.log(password, result);
       return result;
     }
     throw new UnauthorizedException();

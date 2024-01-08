@@ -11,5 +11,5 @@ export class CreateStuffCategoryDto {
   propertyLimitedNumber: number;
 
   @IsNumber()
-  userId: number;
+  userId?: number;
 }

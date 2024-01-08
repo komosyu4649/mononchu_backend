@@ -26,14 +26,15 @@ export class StuffController {
   public async createStuffCategory(
     @Body() createStuffCategoryDto: CreateStuffCategoryDto,
   ) {
-    console.log(111, createStuffCategoryDto);
+    // console.log(111, createStuffCategoryDto);
     return await this.stuffService.createStuffCategory(createStuffCategoryDto);
   }
 
-  @UseGuards(JwtGuard)
+  // @UseGuards(JwtGuard)
   @Get('category/all/:userId')
-  public async getStuffCategory(@Param('userId') userId: number) {
-    return await this.stuffService.getStuffCategory(userId);
+  public async getStuffUserCategory(@Param('userId') userId: number) {
+    // console.log(1, userId);
+    return await this.stuffService.getStuffUserCategory(userId);
   }
 
   @Get('category/:id')
@@ -46,15 +47,23 @@ export class StuffController {
     @Param('id') id: number,
     @Body() createStuffCategoryDto: CreateStuffCategoryDto,
   ) {
+    // console.log('id', id);
+    // console.log('createStuffCategoryDto', createStuffCategoryDto);
     return await this.stuffService.editStuffCategory(
       id,
       createStuffCategoryDto,
     );
   }
 
-  @Delete('category/delete/:id')
-  public async deleteStuffCategory(@Param('id') id: number) {
-    return await this.stuffService.deleteStuffCategory(id);
+  @Delete('category/delete/:userId/:id')
+  public async deleteStuffCategory(
+    @Param('userId') userId: number,
+    @Param('id') id: number,
+  ) {
+    // console.log('userId', userId);
+    // console.log(123);
+    // console.log('id', id);
+    return await this.stuffService.deleteStuffCategory(userId, id);
   }
 
   /** property */
